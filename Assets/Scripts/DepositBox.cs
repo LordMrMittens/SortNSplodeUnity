@@ -61,6 +61,10 @@ public class DepositBox : MonoBehaviour
     {
         float journeyLength = Vector3.Distance(_startingPoint, _Destination);
         float distanceCovered = (Time.time - startTime) * movementSpeed;
+        if(hasInvoked == false){
+            GameManager.Instance.ToggleOnBoxIsMoving(true, this);
+            hasInvoked = true;
+        }
 
         if (distanceCovered < journeyLength)
         {
@@ -80,6 +84,8 @@ public class DepositBox : MonoBehaviour
             {
                 shouldMove = false;
                 shouldReturn = false;
+                GameManager.Instance.ToggleOnBoxIsMoving(false, this);
+                hasInvoked = false;
             }
         }
     }
@@ -98,9 +104,14 @@ public class DepositBox : MonoBehaviour
 
     }
 
-    void SetFrozen(bool _isFrozen)
+    void SetFrozen(bool _isFrozen, DepositBox box = null)
     {
-
+        if(box != this){
+           // ShouldBeFrozen =_isFrozen;
+            Debug.Log($"{gameObject.name} should freeze : {_isFrozen}");
+        }
+        
+        
     }
 }
 

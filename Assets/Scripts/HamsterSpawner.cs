@@ -10,11 +10,12 @@ public class HamsterSpawner : MonoBehaviour
     [SerializeField] float timeBetweenSpawns;
     float spawnTimer;
     [SerializeField] bool spawnFromStart;
-    public bool ShouldBeFrozen {get;set;} = false;
+    public bool ShouldBeFrozen { get; set; } = false;
     // Start is called before the first frame update
     void Start()
     {
-        if(spawnFromStart){
+        if (spawnFromStart)
+        {
             SpawnHamster();
         }
         GameManager.OnBoxIsMoving += SetFrozen;
@@ -39,8 +40,9 @@ public class HamsterSpawner : MonoBehaviour
             spawnTimer = 0;
         }
     }
-        void SetFrozen(bool _isFrozen)
+    void SetFrozen(bool _isFrozen, DepositBox box = null)
     {
-
+        ShouldBeFrozen = _isFrozen;
+        Debug.Log($"{gameObject.name} should freeze : {_isFrozen}");
     }
 }

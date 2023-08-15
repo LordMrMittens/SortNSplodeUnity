@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     int detectLayer;
     float grabbingVerticalOffset;
     bool hoveringOnFloor;
-    public bool ShouldBeFrozen {get;set;} = false;
+    public bool ShouldBeFrozen { get; set; } = false;
     Hamster grabbedHamster;
 
     void Start()
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && ShouldBeFrozen == false)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
                     grabbedHamster.GetComponent<NavMeshAgent>().enabled = false;
                     grabbedHamster.gameObject.layer = ignoreLayer;
                     grabbingVerticalOffset = hit.collider.bounds.max.y;
-                    
+
                 }
             }
         }
@@ -63,15 +63,17 @@ public class PlayerController : MonoBehaviour
                 {
                     grabbedHamster.gameObject.layer = detectLayer;
                     grabbedHamster.GetComponent<NavMeshAgent>().enabled = true;
-                    grabbedHamster.GetComponent<Hamster>().SetNewDestination();}
+                    grabbedHamster.GetComponent<Hamster>().SetNewDestination();
                 }
-
-                grabbedHamster = null;
             }
+
+            grabbedHamster = null;
         }
+    }
 
-            void SetFrozen(bool _isFrozen)
+    void SetFrozen(bool _isFrozen, DepositBox box = null)
     {
-
+        ShouldBeFrozen = _isFrozen;
+        Debug.Log($"{gameObject.name} should freeze : {_isFrozen}");
     }
-    }
+}

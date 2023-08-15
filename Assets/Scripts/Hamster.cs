@@ -11,11 +11,14 @@ public class Hamster : Explosive
     [SerializeField] float DistanceToTargetOffset;
     [SerializeField] float DistanceFromEdgesOffset = 1.0f;
 
+    float navMeshAgentSpeed;
+
     
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgentSpeed = navMeshAgent.speed;
         levelBounds = GameObject.FindGameObjectWithTag("Floor").GetComponent<BoxCollider>().bounds;
         SetNewDestination();
     }
@@ -26,13 +29,13 @@ public class Hamster : Explosive
     {
         if (ShouldBeFrozen == false)
         {
-            navMeshAgent.isStopped = false;
+            navMeshAgent.speed = navMeshAgentSpeed;
             if (Vector3.Distance(transform.position, targetLocation) < DistanceToTargetOffset)
             {
                 SetNewDestination();
             }
         } else{
-            navMeshAgent.isStopped = true;
+            navMeshAgent.speed = 0;
         }
     }
     public void SetNewDestination()

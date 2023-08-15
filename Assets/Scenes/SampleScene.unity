@@ -300,8 +300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2137eea513e9227478ede94ddad8356c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberContainedToScore: 1
-  distanceToTravel: 2
+  numberContainedToScore: 3
+  distanceToTravel: 10
   direction: {x: -1, y: 0, z: 0}
   movementSpeed: 2
 --- !u!1 &226754489
@@ -521,8 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2137eea513e9227478ede94ddad8356c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberContainedToScore: 1
-  distanceToTravel: 2
+  numberContainedToScore: 3
+  distanceToTravel: 10
   direction: {x: 1, y: 0, z: 0}
   movementSpeed: 2
 --- !u!1 &619155451
