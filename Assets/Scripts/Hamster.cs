@@ -24,8 +24,15 @@ public class Hamster : Explosive
     // Update is called once per frame
     void Update()
     {
-        if( Vector3.Distance(transform.position, targetLocation)< DistanceToTargetOffset){
-            SetNewDestination();
+        if (ShouldBeFrozen == false)
+        {
+            navMeshAgent.isStopped = false;
+            if (Vector3.Distance(transform.position, targetLocation) < DistanceToTargetOffset)
+            {
+                SetNewDestination();
+            }
+        } else{
+            navMeshAgent.isStopped = true;
         }
     }
     public void SetNewDestination()
@@ -33,7 +40,7 @@ public class Hamster : Explosive
         targetLocation = VerifyDestination();
         navMeshAgent.SetDestination(targetLocation);
     }
-        Vector3 VerifyDestination()
+    Vector3 VerifyDestination()
     {
         Vector3 destination;
         float randX = Random.Range(levelBounds.min.x+DistanceFromEdgesOffset, levelBounds.max.x-DistanceFromEdgesOffset);

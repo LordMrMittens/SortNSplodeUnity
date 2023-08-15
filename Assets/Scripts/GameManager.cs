@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-
+    public static event Action <bool> OnBoxIsMoving;
     public static GameManager Instance;
     public int score=0;
     [SerializeField] TMP_Text scoreText;

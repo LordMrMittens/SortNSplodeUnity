@@ -13,13 +13,14 @@ public class PlayerController : MonoBehaviour
     int detectLayer;
     float grabbingVerticalOffset;
     bool hoveringOnFloor;
-
+    public bool ShouldBeFrozen {get;set;} = false;
     Hamster grabbedHamster;
 
     void Start()
     {
         ignoreLayer = LayerMask.NameToLayer("IgnoreHamsters");
         detectLayer = LayerMask.NameToLayer("Hamsters");
+        GameManager.OnBoxIsMoving += SetFrozen;
     }
 
     // Update is called once per frame
@@ -68,4 +69,9 @@ public class PlayerController : MonoBehaviour
                 grabbedHamster = null;
             }
         }
+
+            void SetFrozen(bool _isFrozen)
+    {
+
+    }
     }

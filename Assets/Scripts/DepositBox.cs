@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
@@ -7,6 +8,7 @@ public class DepositBox : MonoBehaviour
 {
     List<Hamster> containedHamsters = new List<Hamster>();
     public int numberContainedToScore = 10;
+    public bool ShouldBeFrozen {get;set;} = false;
 
     private Vector3 destination;
     private Vector3 startingPoint;
@@ -14,15 +16,16 @@ public class DepositBox : MonoBehaviour
     public Vector3 direction;
     private float startTime;
     public float movementSpeed = 2.0f;
-
     bool shouldMove = false;
     bool shouldReturn = false;
+    bool hasInvoked =false;
 
     private void Start()
     {
         startingPoint = transform.position;
         direction = // Define your direction here.
         destination = startingPoint + direction.normalized * distanceToTravel;
+        GameManager.OnBoxIsMoving += SetFrozen;
     }
 
     void Update()
@@ -56,7 +59,6 @@ public class DepositBox : MonoBehaviour
 
     void MoveBox(Vector3 _startingPoint, Vector3 _Destination)
     {
-
         float journeyLength = Vector3.Distance(_startingPoint, _Destination);
         float distanceCovered = (Time.time - startTime) * movementSpeed;
 
@@ -80,22 +82,29 @@ public class DepositBox : MonoBehaviour
                 shouldReturn = false;
             }
         }
-
-
     }
 
     void AddScores()
     {
         GameManager.Instance.AddToScore(containedHamsters.Count);
-        
+
         foreach (Hamster hamster in containedHamsters)
         {
             Destroy(hamster.gameObject);
         }
         containedHamsters.Clear();
         startTime = Time.time;
+
+
+    }
+
+    void SetFrozen(bool _isFrozen)
+    {
+
     }
 }
+
+
 
 
 
