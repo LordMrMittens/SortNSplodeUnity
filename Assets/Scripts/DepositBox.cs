@@ -27,17 +27,21 @@ public class DepositBox : MonoBehaviour
 
     void Update()
     {
-        if (containedHamsters.Count == numberContainedToScore && !shouldMove)
+        if (containedHamsters.Count == numberContainedToScore)
         {
             shouldMove = true;
             startTime = Time.time;
-            
-            StartCoroutine(MoveBoxCoroutine(startingPoint, destination));
         }
-        if(shouldReturn && !shouldMove){
-            shouldMove = true;
-            StartCoroutine(MoveBoxCoroutine(destination, startingPoint));
-            Debug.Log("returning");
+        if (shouldMove)
+        {
+            if (shouldReturn)
+            {
+                MoveBox(destination, startingPoint);
+            }
+            else
+            {
+                MoveBox(startingPoint, destination);
+            }
         }
     }
 
@@ -50,41 +54,37 @@ public class DepositBox : MonoBehaviour
         }
     }
 
-    IEnumerator MoveBoxCoroutine(Vector3 _startingPoint, Vector3 _Destination)
+    void MoveBox(Vector3 _startingPoint, Vector3 _Destination)
     {
-        while (shouldMove)
-        {
-            float journeyLength = Vector3.Distance(_startingPoint, _Destination);
-            float distanceCovered = (Time.time - startTime) * movementSpeed;
 
-            if (distanceCovered < journeyLength)
+        float journeyLength = Vector3.Distance(_startingPoint, _Destination);
+        float distanceCovered = (Time.time - startTime) * movementSpeed;
+
+        if (distanceCovered < journeyLength)
+        {
+            float fractionOfJourney = distanceCovered / journeyLength;
+            transform.position = Vector3.Lerp(_startingPoint, _Destination, fractionOfJourney);
+        }
+        else
+        {
+            transform.position = _Destination;
+            if (shouldReturn == false)
             {
-                float fractionOfJourney = distanceCovered / journeyLength;
-                transform.position = Vector3.Lerp(_startingPoint, _Destination, fractionOfJourney);
+                shouldMove = true;
+                shouldReturn = true;
+                AddScores();
             }
             else
             {
-                transform.position = _Destination;
                 shouldMove = false;
+                shouldReturn = false;
             }
-            
-            yield return null;
         }
-        Debug.Log("logging this");
-        if (shouldReturn == false)
-        {
-            
-            StartCoroutine(AddScores());
-            Debug.Log("attempting this");
 
-        } else {
-            shouldMove=false;
-            shouldReturn=false;
-        }
-        
+
     }
 
-    IEnumerator AddScores()
+    void AddScores()
     {
         GameManager.Instance.AddToScore(containedHamsters.Count);
         
@@ -94,9 +94,6 @@ public class DepositBox : MonoBehaviour
         }
         containedHamsters.Clear();
         startTime = Time.time;
-        shouldReturn = true;
-        Debug.Log("finished Scores");
-        yield return null;
     }
 }
 
