@@ -23,17 +23,18 @@ public class DepositBox : MonoBehaviour
     private void Start()
     {
         startingPoint = transform.position;
-        direction = // Define your direction here.
+        startTime =0;
         destination = startingPoint + direction.normalized * distanceToTravel;
         GameManager.OnBoxIsMoving += SetFrozen;
     }
 
     void Update()
     {
-        if (containedHamsters.Count == numberContainedToScore)
+        if (containedHamsters.Count >= numberContainedToScore)
         {
             shouldMove = true;
-            startTime = Time.time;
+            if(startTime ==0){
+            startTime = Time.time;}
         }
         if (shouldMove)
         {
@@ -59,6 +60,7 @@ public class DepositBox : MonoBehaviour
 
     void MoveBox(Vector3 _startingPoint, Vector3 _Destination)
     {
+        
         float journeyLength = Vector3.Distance(_startingPoint, _Destination);
         float distanceCovered = (Time.time - startTime) * movementSpeed;
         if(hasInvoked == false){
@@ -68,16 +70,20 @@ public class DepositBox : MonoBehaviour
 
         if (distanceCovered < journeyLength)
         {
+            
             float fractionOfJourney = distanceCovered / journeyLength;
+            Debug.Log($"moving from here, {_startingPoint} to here{_Destination} fraction {fractionOfJourney} ");
             transform.position = Vector3.Lerp(_startingPoint, _Destination, fractionOfJourney);
         }
         else
         {
+            Debug.Log("elseing here");
             transform.position = _Destination;
             if (shouldReturn == false)
             {
                 shouldMove = true;
                 shouldReturn = true;
+                startTime =0;
                 AddScores();
             }
             else
@@ -86,6 +92,7 @@ public class DepositBox : MonoBehaviour
                 shouldReturn = false;
                 GameManager.Instance.ToggleOnBoxIsMoving(false, this);
                 hasInvoked = false;
+                startTime =0;
             }
         }
     }
